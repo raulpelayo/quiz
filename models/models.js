@@ -25,17 +25,21 @@ var sequelize = new Sequelize(DB_name, user, pwd,
     omitNull: true      // solo Postgres
   }
 );
-//Importar la definición de la tabla Quiz desde quiz.js
-var Quiz = sequelize.import (path.join(__dirname,'quiz'));
-//Exportar defición de la tabla
-exports.Quiz = Quiz;
 
-//Crear e inicializar tabla
-sequelize.sync().then(function(){
+// Importar definicion de la tabla Quiz
+var quiz_path = path.join(__dirname,'quiz');
+var Quiz = sequelize.import(quiz_path);
+
+exports.Quiz = Quiz; // exportar tabla Quiz
+
+// sequelize.sync() inicializa tabla de preguntas en DB
+sequelize.sync().then(function() {
+  // then(..) ejecuta el manejador una vez creada la tabla
   Quiz.count().then(function (count){
-    if (count === 0) {
-      Quiz.create({pregunta: 'Capital de Italia', respuesta: 'Roma'
-    }).then(function(){console.log('BBDD inicializada')})
+    if(count === 0) {   // la tabla se inicializa solo si está vacía
+      Quiz.create({pregunta: 'Capital de Italia',   respuesta: 'Roma'});
+      Quiz.create({pregunta: 'Capital de Portugal', respuesta: 'Lisboa'})
+      .then(function(){console.log('Base de datos inicializada')});
     };
   });
 });
