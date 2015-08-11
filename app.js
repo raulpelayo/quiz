@@ -32,6 +32,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Helpers dinamicos:
 app.use(function(req, res, next) {
 
+  if (req.session.user){
+       if (((new Date()).getTime()-req.session.last_time)>120000)
+       {
+           req.session.autoLogout = true;
+           delete req.session.last_time;
+           delete req.session.user;
+           res.redirect("/login");
+           next();
+       }
+       req.session.last_time = (new Date()).getTime();
+   }
+
   // guardar path en session.redir para despues de login
   if (!req.path.match(/\/login|\/logout/)) {
     req.session.redir = req.path;

@@ -1,3 +1,9 @@
+<% if (session.autoLogout===true) { %>
+<br/><label class="error">Usuario inactivo</label>
+<br/><label class="error">Periodo de inactividad superior a 2 minutos. Vuelva a autenticarse.</label>
+<% session.autoLogout = false %>
+<% } %>
+
 <h2>Login</h2>
 
 <form method='POST' action='/login'>
