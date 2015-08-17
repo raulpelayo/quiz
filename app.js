@@ -38,7 +38,7 @@ app.use(function(req, res, next) {
            req.session.autoLogout = true;
            delete req.session.last_time;
            delete req.session.user;
-           res.redirect("/login");
+           //res.redirect("/login");
            next();
        }
        req.session.last_time = (new Date()).getTime();
